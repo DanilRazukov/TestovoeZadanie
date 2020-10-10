@@ -15,8 +15,8 @@ class Table extends React.Component {
                 <table style={{border: "1px solid #69c", margin:"0 auto",width:"900px"}}>
                     <thead>
                     <tr>
-                        <th>Фамилия</th>
                         <th>Имя</th>
+                        <th>Фамилия</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -30,12 +30,12 @@ class Table extends React.Component {
                                 {item.lastName}
                             </td>
                             <td style={{padding:"7px 17px",margin:"0 auto"}}>
-                                <input type="image" src={Edit} onClick={()=>{
+                                <input type="image" name="image" alt="" src={Edit} onClick={()=>{
                                     this.onPressEdit(item.id)
-                                }} style={{marginLeft:"auto",marginRight:"auto"}}/>
-                                <input type="image" src={Delete} onClick={()=>{
+                                }} style={{position:"relative",left:"15px"}}/>
+                                <input type="image" name="image" alt="" src={Delete} onClick={()=>{
                                     this.onPressDelete(item.id)
-                                }} style={{marginLeft:"auto",marginRight:"auto"}}/>
+                                }} style={{position:"relative",left:"15px"}}/>
                             </td>
                         </tr>
                     ))}

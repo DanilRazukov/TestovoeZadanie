@@ -3,19 +3,15 @@ import Modal from "react-modal";
 
 Modal.setAppElement ('#root')
 const ModalDeleteWindow = (props) => {
-    let newLastName = React.createRef();
-    let newFirstName = React.createRef();
-
-    let AddEditPerson = () => {
-        let LastName = newLastName.current.value;
-        let FirstName = newFirstName.current.value;
-        props.editPerson(LastName,FirstName);
-        newLastName.current.value = "";
-        newFirstName.current.value = "";
+    debugger
+    let FullName = "Данных нет"
+    if (props.item.length !== 0) {
+        FullName = props.item[0].lastName + " " + props.item[0].firstName
     }
+    console.log(props)
     return (
         <Modal isOpen={props.openModal}
-               onRequestClose={()=>props.handleOpenModal()}
+               onRequestClose={()=>props.handleOpenModalDelete()}
                shouldCloseOnOverlayClick={true}
                style={
                    {
@@ -34,22 +30,14 @@ const ModalDeleteWindow = (props) => {
                    }
                }>
             <h3>
-                Редактирование пользователя
+                Вы действительно хотите удалить пользователя {FullName}
             </h3>
             <div>
-                <p>Фамилия</p>
-                <textarea ref={newLastName}></textarea>
+                <button onClick={()=>props.DeletePerson()}>Удалить</button>
             </div>
             <div>
-                <p>Имя</p>
-                <textarea ref={newFirstName}></textarea>
-            </div>
-            <div>
-                <button onClick={AddEditPerson}>Add</button>
-            </div>
-            <div>
-                <button onClick={()=>props.handleOpenModal()}>
-                    Close Modal
+                <button onClick={()=>props.handleOpenModalDelete()}>
+                    Закрыть окно
                 </button>
             </div>
         </Modal>
