@@ -5,21 +5,28 @@ import styles from "./Table.module.css"
 
 class Table extends React.Component {
     onPressEdit = (item) => {
-            this.props.handleOpenModalEdit(item)
+        const code = 1;
+        this.props.handleOpenModal(item, code)
     }
     onPressDelete = (item) => {
-        this.props.handleOpenModalDelete(item)
+        const code = 2;
+        this.props.handleOpenModal(item, code)
+    }
+    onPressAdd = () => {
+        const code = 3;
+        this.props.handleOpenModal(null, code)
     }
     render() {
         return (
             <div className={styles.tableWrap}>
-                <button className={styles.buttonAdd} onClick={this.props.handleOpenModalAdd}>Добавить нового сотрудника</button>
+                <button className={styles.buttonAdd} onClick={()=>{this.onPressAdd()}}>Добавить нового сотрудника</button>
                 <table className={styles.table}>
                     <thead className={styles.thead}>
                     <tr className={styles.tr}>
                         <th className={styles.th}>Имя сотрудника</th>
                         <th className={styles.th}>Фамилия сотрудника</th>
-                        <th className={styles.th}/>
+                        <th className={styles.th}>Изменить</th>
+                        <th className={styles.th}>Удалить</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,6 +41,8 @@ class Table extends React.Component {
                             <td className={styles.td} data-label="Изменить">
                                 <input type="image" name="image" alt="" src={Edit} className={styles.button}
                                        onClick={()=>{this.onPressEdit(item.id)}}/>
+                            </td>
+                            <td className={styles.td} data-label="Удалить">
                                 <input type="image" name="image" alt="" src={Delete} className={styles.button}
                                        onClick={()=>{this.onPressDelete(item.id)}}/>
                             </td>

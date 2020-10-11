@@ -17,50 +17,34 @@ const ModalEditWindow = (props) => {
         newLastName.current.value = "";
         newFirstName.current.value = "";
     }
+    const CloseEditWindow = () => {
+        const dataFromChild = 1;
+        props.CloseWindow (dataFromChild)
+    }
     return (
-        <Modal isOpen={props.openModal}
-               onRequestClose={() => props.handleOpenModal()}
-               shouldCloseOnOverlayClick={true}
-               style={
-                   {
-                       overlay: {
-                           backgroundColor: "rgb(128,128,128,0.7)"
-                       },
-                       content: {
-                           top: "30%",
-                           left: "50%",
-                           transform: "translate(-50%, -50%)",
-                           width: "500px",
-                           maxWidth: "100%",
-                           height: "300px",
-                           maxHeight: "100%"
-                       }
-                   }
-               }>
+        <div>
             <h3>
                 Редактирование пользователя {FullName}
             </h3>
             <div>
-                <p>Фамилия</p>
+                <strong>Фамилия:</strong>
                 <textarea ref={newLastName}
                           placeholder="Введите Фамилию сотрудника"
-                          style={{resize: "none", position: "relative", left: "15px"}}/>
+                          style={{resize: "none", position: "relative", left: "15px", top:"10px"}}/>
             </div>
             <div>
-                <p>Имя</p>
+                <strong>Имя:</strong>
                 <textarea ref={newFirstName}
                           placeholder="Введите Имя сотрудника"
-                          style={{resize: "none", position: "relative", left: "15px"}}/>
+                          style={{resize: "none", position: "relative", left: "15px", top:"10px"}}/>
             </div>
-            <div>
-                <button onClick={AddEditPerson}>Add</button>
-            </div>
-            <div>
-                <button onClick={() => props.handleOpenModal()}>
-                    Close Modal
+            <div style={{top:"25px", position:"relative"}}>
+                <button style={{color:"blue"}} onClick={AddEditPerson}>Add</button>
+                <button style={{color:"red",position:"relative",left:"75%"}} onClick={()=>{CloseEditWindow()}}>
+                    Закрыть окно
                 </button>
             </div>
-        </Modal>
+        </div>
     )
 }
 export default ModalEditWindow

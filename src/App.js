@@ -1,15 +1,14 @@
 import React from 'react';
 import styles from './App.module.css';
 import Table from "./Table/Table";
-import ModalEditWindow from "./ModalWindow/ModalEditWindow";
-import ModalAddWindow from "./ModalWindow/ModalAddWindow";
 import axios from 'axios'
-import ModalDeleteWindow from "./ModalWindow/ModalDeletWindow";
+import ModalWindow from "./ModalWindow/ModalWindow";
 
 
 class App extends React.Component {
     state = {
         data: [],
+        isOpen: false,
         isModalEditOpen: false,
         isModalDeleteOpen: false,
         isModalAddOpen: false,
@@ -19,41 +18,49 @@ class App extends React.Component {
             firstName: "Нет данных"
         }]
     }
-    handleOpenModalEdit = (item) => {
-        this.setState({isModalEditOpen: !this.state.isModalEditOpen});
+    handleOpenModal = (item, code) => {
+        debugger
+        this.setState({isOpen: !this.state.isOpen})
+        if (code === 1) {
+            this.setState({isModalEditOpen: !this.state.isModalEditOpen});
+        } else {
+            if (code === 2) {
+                this.setState({isModalDeleteOpen: !this.state.isModalDeleteOpen})
+            } else {
+                if (code === 3) {
+                    this.setState({isModalAddOpen: !this.state.isModalAddOpen})
+                }
+            }
+        }
         if (item !== this.state.userId) {
             this.setState({userId: item});
-            this.setState({item: this.state.data.filter(item => item.id === this.state.userId)})
-        }
-
-    }
-    handleOpenModalAdd = () => {
-        this.setState({isModalAddOpen: !this.state.isModalAddOpen})
-    }
-    handleOpenModalDelete = (item) => {
-        this.setState({isModalDeleteOpen: !this.state.isModalDeleteOpen})
-        if (item !== this.state.userId) {
-            this.setState({userId: item});
-            this.setState({item: this.state.data.filter(item => item.id === this.state.userId)})
+            this.setState({item: this.state.data.filter(items => items.id === this.state.userId)})
         }
     }
-
     AddNewPerson = (LastName, FirstName) => {
         if (LastName !== "" || FirstName !== "") {
-            axios.post('http://localhost:3000/Person', {
+            axios.post('http://localhost:3001/Person', {
                 'firstName': FirstName,
                 'lastName': LastName
             }).then(res => {
                 console.log(res);
                 console.log(res.data);
                 alert("Прошло успешно")
+                const code = 3;
+                this.handleOpenModal(code);
             })
         } else {
             alert("Фамилия и имя не были введены. Введите имя или фамилию нового сотрудника")
         }
+        const copied = [...this.state.data]
+        copied.push({
+            firstName: FirstName,
+            lastName: LastName
+        })
+        this.setState({data: copied})
     }
     EditPerson = (LastName, FirstName, UserId) => {
-        axios.put(`http://localhost:3000/Person/${UserId}`, {
+        axios.put(`http://localhost:3001/Person/${UserId}`, {
             'firstName': FirstName,
             'lastName': LastName
         }).then(response => {
@@ -65,12 +72,13 @@ class App extends React.Component {
                 lastName: LastName,
                 firstName: FirstName
             }
+            const code = 1;
+            this.handleOpenModal(null, code);
             this.setState({data: copied})
-            this.handleOpenModalEdit()
         })
     }
     DeletePerson = () => {
-        axios.delete(`http://localhost:3000/Person/${this.state.userId}`).then(response => {
+        axios.delete(`http://localhost:3001/Person/${this.state.userId}`).then(response => {
                 alert("Удаление прошло успешно");
                 console.log(response)
                 const copied = [...this.state.data]
@@ -79,8 +87,9 @@ class App extends React.Component {
                     lastName: "Нет данных",
                     firstName: "Нет данных"
                 }
-            this.setState({data: copied})
-            this.handleOpenModalDelete()
+                this.setState({data: copied})
+                const code = 2;
+                this.handleOpenModal(null, code);
             }
         )
     }
@@ -92,38 +101,32 @@ class App extends React.Component {
             })
         }
         if (prevState.data !== this.state.data) {
-            const data = await axios.get('http://localhost:3000/Person')
+            const data = await axios.get('http://localhost:3001/Person')
             await this.setState(this.state.data = data.data)
-            debugger
         }
     }
 
     async componentDidMount() {
-        const data = await axios.get('http://localhost:3000/Person')
+        const data = await axios.get('http://localhost:3001/Person')
         await this.setState(this.state.data = data.data)
     }
 
     render() {
         return (
             <div className={styles.body}>
-                <Table state={this.state} handleOpenModalEdit={this.handleOpenModalEdit}
-                       handleOpenModalDelete={this.handleOpenModalDelete} handleOpenModalAdd={this.handleOpenModalAdd}/>
-                <ModalEditWindow openModal={this.state.isModalEditOpen}
-                                 handleOpenModal={this.handleOpenModalEdit}
-                                 userId={this.state.userId}
-                                 item={this.state.item}
-                                 editPerson={this.EditPerson}/>
-                <ModalAddWindow openModal={this.state.isModalAddOpen}
-                                handleOpenModalAdd={this.handleOpenModalAdd}
-                                AddNewPerson={this.AddNewPerson}/>
-                <ModalDeleteWindow openModal={this.state.isModalDeleteOpen}
-                                   handleOpenModalDelete={this.handleOpenModalDelete}
-                                   userId={this.state.userId}
-                                   item={this.state.item}
-                                   DeletePerson={this.DeletePerson}/>
+                <Table state={this.state} handleOpenModal={this.handleOpenModal}/>
+                <ModalWindow isOpen={this.state.isOpen}
+                             handleOpenModal={this.handleOpenModal}
+                             isModalAddOpen={this.state.isModalAddOpen}
+                             isModalEditOpen={this.state.isModalEditOpen}
+                             isModalDeleteOpen={this.state.isModalDeleteOpen}
+                             userId={this.state.userId} item={this.state.item}
+                             editPerson={this.EditPerson}
+                             AddNewPerson={this.AddNewPerson}
+                             DeletePerson={this.DeletePerson}
+                />
             </div>
         )
     }
 }
-
 export default App;

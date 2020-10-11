@@ -12,26 +12,12 @@ const ModalAddWindow = (props) => {
         AddLastName.current.value = "";
         AddFirstName.current.value = "";
     }
+    const CloseAddWindow = () => {
+        const dataFromChild = 3;
+        props.CloseWindow (dataFromChild)
+    }
     return (
-        <Modal isOpen={props.openModal}
-               onRequestClose={() => props.handleOpenModalAdd()}
-               shouldCloseOnOverlayClick={true}
-               style={
-                   {
-                       overlay: {
-                           backgroundColor: "rgb(128,128,128,0.7)"
-                       },
-                       content: {
-                           top:"30%",
-                           left:"50%",
-                           transform:"translate(-50%, -50%)",
-                           width:"500px",
-                           maxWidth:"100%",
-                           height:"300px",
-                           maxHeight:"100%"
-                       }
-                   }
-               }>
+        <div>
             <h3>
                 Добавление нового пользователя
             </h3>
@@ -46,12 +32,12 @@ const ModalAddWindow = (props) => {
                           style={{resize: "none", position: "relative", left: "15px",top:"10px"}}/>
             </div>
             <div style={{top:"25px", position:"relative"}}>
-                <button style={{color:"blue"}} onClick={AddPerson}>Add</button>
-                <button style={{color:"red",position:"relative",left:"75%"}} onClick={() => props.handleOpenModalAdd()}>
-                    Close Modal
+                <button style={{color:"blue"}} onClick={AddPerson}>Добавить Сотрудника</button>
+                <button style={{color:"red",position:"relative",left:"70"}} onClick={()=>{CloseAddWindow()}}>
+                    Закрыть окно
                 </button>
             </div>
-        </Modal>
+        </div>
     )
 }
 export default ModalAddWindow

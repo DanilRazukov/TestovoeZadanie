@@ -1,21 +1,6 @@
 {
   "Person": [
     {
-      "firstName": "Danil",
-      "lastName": "Razukov",
-      "id": 0
-    },
-    {
-      "firstName": "Aleksej",
-      "lastName": "Ivanov",
-      "id": 1
-    },
-    {
-      "firstName": "Viktor",
-      "lastName": "Semenov",
-      "id": 2
-    },
-    {
       "firstName": "Aleksandr",
       "lastName": "Petrov",
       "id": 3
@@ -26,19 +11,9 @@
       "id": 5
     },
     {
-      "firstName": "Tatjana",
-      "lastName": "Sviridova",
-      "id": 7
-    },
-    {
       "firstName": "Ксения",
       "lastName": "Савина",
       "id": 8
-    },
-    {
-      "firstName": "Надежда",
-      "lastName": "Русинова",
-      "id": 10
     },
     {
       "firstName": "Ксения",
