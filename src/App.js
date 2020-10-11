@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import styles from './App.module.css';
 import Table from "./Table/Table";
 import ModalEditWindow from "./ModalWindow/ModalEditWindow";
 import ModalAddWindow from "./ModalWindow/ModalAddWindow";
@@ -105,9 +105,9 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={styles.body}>
                 <Table state={this.state} handleOpenModalEdit={this.handleOpenModalEdit}
-                       handleOpenModalDelete={this.handleOpenModalDelete}/>
+                       handleOpenModalDelete={this.handleOpenModalDelete} handleOpenModalAdd={this.handleOpenModalAdd}/>
                 <ModalEditWindow openModal={this.state.isModalEditOpen}
                                  handleOpenModal={this.handleOpenModalEdit}
                                  userId={this.state.userId}
@@ -121,9 +121,6 @@ class App extends React.Component {
                                    userId={this.state.userId}
                                    item={this.state.item}
                                    DeletePerson={this.DeletePerson}/>
-                <div>
-                    <button onClick={this.handleOpenModalAdd}>Add New Person</button>
-                </div>
             </div>
         )
     }

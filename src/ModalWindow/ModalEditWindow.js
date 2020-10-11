@@ -1,11 +1,11 @@
 import React from "react";
 import Modal from "react-modal";
 
-Modal.setAppElement('#root')
+Modal.setAppElement('#root');
 const ModalEditWindow = (props) => {
     let newLastName = React.createRef();
     let newFirstName = React.createRef();
-    let FullName = "Данных нет"
+    let FullName = "Данных нет";
     if (props.item.length !== 0) {
         FullName = props.item[0].lastName + " " + props.item[0].firstName
     }
@@ -43,12 +43,14 @@ const ModalEditWindow = (props) => {
             <div>
                 <p>Фамилия</p>
                 <textarea ref={newLastName}
-                          style={{resize: "none", position: "relative", left: "15px"}}></textarea>
+                          placeholder="Введите Фамилию сотрудника"
+                          style={{resize: "none", position: "relative", left: "15px"}}/>
             </div>
             <div>
                 <p>Имя</p>
                 <textarea ref={newFirstName}
-                          style={{resize: "none", position: "relative", left: "15px"}}></textarea>
+                          placeholder="Введите Имя сотрудника"
+                          style={{resize: "none", position: "relative", left: "15px"}}/>
             </div>
             <div>
                 <button onClick={AddEditPerson}>Add</button>

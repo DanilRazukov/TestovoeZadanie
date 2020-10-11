@@ -1,6 +1,7 @@
 import React from 'react';
 import Delete from "./../Image/Delete.png"
-import Edit from "../Image/Edit.png";
+import Edit from "../Image/Edit.png"
+import styles from "./Table.module.css"
 
 class Table extends React.Component {
     onPressEdit = (item) => {
@@ -11,31 +12,30 @@ class Table extends React.Component {
     }
     render() {
         return (
-            <div>
-                <table style={{border: "1px solid #69c", margin:"0 auto",width:"900px"}}>
-                    <thead>
-                    <tr>
-                        <th>Имя</th>
-                        <th>Фамилия</th>
-                        <th></th>
+            <div className={styles.tableWrap}>
+                <button className={styles.buttonAdd} onClick={this.props.handleOpenModalAdd}>Добавить нового сотрудника</button>
+                <table className={styles.table}>
+                    <thead className={styles.thead}>
+                    <tr className={styles.tr}>
+                        <th className={styles.th}>Имя сотрудника</th>
+                        <th className={styles.th}>Фамилия сотрудника</th>
+                        <th className={styles.th}/>
                     </tr>
                     </thead>
                     <tbody>
                     {this.props.state.data.map(item => (
                         <tr key={item.id}>
-                            <td style={{ color:"#669", padding:"7px 17px"}}>
+                            <td className={styles.td} data-label="Имя">
                                 {item.firstName}
                             </td>
-                            <td style={{ color:"#669", padding:"7px 17px"}} >
+                            <td className   ={styles.td} data-label="Фамилия" >
                                 {item.lastName}
                             </td>
-                            <td style={{padding:"7px 17px",margin:"0 auto"}}>
-                                <input type="image" name="image" alt="" src={Edit} onClick={()=>{
-                                    this.onPressEdit(item.id)
-                                }} style={{position:"relative",left:"15px"}}/>
-                                <input type="image" name="image" alt="" src={Delete} onClick={()=>{
-                                    this.onPressDelete(item.id)
-                                }} style={{position:"relative",left:"15px"}}/>
+                            <td className={styles.td} data-label="Изменить">
+                                <input type="image" name="image" alt="" src={Edit} className={styles.button}
+                                       onClick={()=>{this.onPressEdit(item.id)}}/>
+                                <input type="image" name="image" alt="" src={Delete} className={styles.button}
+                                       onClick={()=>{this.onPressDelete(item.id)}}/>
                             </td>
                         </tr>
                     ))}

@@ -1,14 +1,12 @@
 import React from "react";
 import Modal from "react-modal";
 
-Modal.setAppElement ('#root')
+Modal.setAppElement ('#root');
 const ModalDeleteWindow = (props) => {
-    debugger
     let FullName = "Данных нет"
     if (props.item.length !== 0) {
         FullName = props.item[0].lastName + " " + props.item[0].firstName
     }
-    console.log(props)
     return (
         <Modal isOpen={props.openModal}
                onRequestClose={()=>props.handleOpenModalDelete()}

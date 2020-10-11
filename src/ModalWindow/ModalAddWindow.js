@@ -37,12 +37,12 @@ const ModalAddWindow = (props) => {
             </h3>
             <div>
                 <strong>Фамилия:</strong>
-                <textarea placeholder={"Фамилия"} ref={AddLastName}
+                <textarea placeholder="Введите Фамилию сотрудника" ref={AddLastName}
                           style={{resize: "none", position: "relative", left: "15px"}}/>
             </div>
             <div>
                 <strong>Имя:</strong>
-                <textarea placeholder={"Имя"} ref={AddFirstName}
+                <textarea placeholder="Введите Имя сотрудника"
                           style={{resize: "none", position: "relative", left: "15px",top:"10px"}}/>
             </div>
             <div style={{top:"25px", position:"relative"}}>
