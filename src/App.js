@@ -55,7 +55,6 @@ class App extends React.Component {
         })
     }
     handleOpenModal = (item, code) => {
-        debugger
         this.setState({isOpen: !this.state.isOpen})
         if (code === 1) {
             this.setState({isModalEditOpen: !this.state.isModalEditOpen});
