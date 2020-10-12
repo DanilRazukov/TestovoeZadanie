@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import style from "./Button.module.css"
 
 Modal.setAppElement('#root');
 const ModalEditWindow = (props) => {
@@ -27,20 +28,20 @@ const ModalEditWindow = (props) => {
                 Редактирование пользователя {FullName}
             </h3>
             <div>
-                <strong>Фамилия:</strong>
+                <strong style={{position:"relative", bottom:"3px"}}>Фамилия:</strong>
                 <textarea ref={newLastName}
                           placeholder="Введите Фамилию сотрудника"
                           style={{resize: "none", position: "relative", left: "15px", top:"10px"}}/>
             </div>
             <div>
-                <strong>Имя:</strong>
+                <strong style={{position:"relative", bottom:"4px"}}>Имя:</strong>
                 <textarea ref={newFirstName}
                           placeholder="Введите Имя сотрудника"
-                          style={{resize: "none", position: "relative", left: "15px", top:"10px"}}/>
+                          style={{resize: "none", position: "relative", left: "54px", top:"10px"}}/>
             </div>
             <div style={{top:"25px", position:"relative"}}>
-                <button style={{color:"blue"}} onClick={AddEditPerson}>Add</button>
-                <button style={{color:"red",position:"relative",left:"75%"}} onClick={()=>{CloseEditWindow()}}>
+                <button className={style.button} style={{position:"relative", top:"30px"}} onClick={AddEditPerson}>Редактировать</button>
+                <button className={style.button} style={{position:"relative", top:"30px", left:"190px"}} onClick={()=>{CloseEditWindow()}}>
                     Закрыть окно
                 </button>
             </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import style from "./Button.module.css"
 
 Modal.setAppElement('#root')
 const ModalAddWindow = (props) => {
@@ -22,18 +23,18 @@ const ModalAddWindow = (props) => {
                 Добавление нового пользователя
             </h3>
             <div>
-                <strong>Фамилия:</strong>
+                <strong style={{position:"relative",bottom:"12px"}}>Фамилия:</strong>
                 <textarea placeholder="Введите Фамилию сотрудника" ref={AddLastName}
                           style={{resize: "none", position: "relative", left: "15px"}}/>
             </div>
             <div>
-                <strong>Имя:</strong>
-                <textarea placeholder="Введите Имя сотрудника"
-                          style={{resize: "none", position: "relative", left: "15px",top:"10px"}}/>
+                <strong style={{position:"relative",bottom:"4px"}}>Имя:</strong>
+                <textarea placeholder="Введите Имя сотрудника" ref={AddFirstName}
+                          style={{resize: "none", position: "relative", left: "53px",top:"10px"}}/>
             </div>
-            <div style={{top:"25px", position:"relative"}}>
-                <button style={{color:"blue"}} onClick={AddPerson}>Добавить Сотрудника</button>
-                <button style={{color:"red",position:"relative",left:"70"}} onClick={()=>{CloseAddWindow()}}>
+            <div style={{top:"60px", position:"relative"}}>
+                <button className={style.button} onClick={AddPerson}>Добавить Сотрудника</button>
+                <button className={style.button} style={{position:"relative", left:"150px"}} onClick={()=>{CloseAddWindow()}}>
                     Закрыть окно
                 </button>
             </div>

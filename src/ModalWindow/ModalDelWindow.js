@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import style from "./Button.module.css"
 
 Modal.setAppElement ('#root');
 const ModalDelWindows = (props) => {
@@ -16,11 +17,9 @@ const ModalDelWindows = (props) => {
             <h3>
                 Вы действительно хотите удалить пользователя {FullName}
             </h3>
-            <div>
-                <button onClick={()=>props.DeletePerson()}>Удалить</button>
-            </div>
-            <div>
-                <button onClick={()=>{CloseDeleteWindow()}}>
+            <div style={{position:"relative", top:"120px"}}>
+                <button className={style.button} onClick={()=>props.DeletePerson()}>Удалить</button>
+                <button className={style.button} style={{position:"relative", left:"240px"}} onClick={()=>{CloseDeleteWindow()}}>
                     Закрыть окно
                 </button>
             </div>

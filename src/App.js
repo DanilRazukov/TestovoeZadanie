@@ -3,6 +3,18 @@ import styles from './App.module.css';
 import Table from "./Table/Table";
 import axios from 'axios'
 import ModalWindow from "./ModalWindow/ModalWindow";
+import styled from "styled-components";
+
+const Container = styled.div`
+    background-color: ${props => props.color};
+    color: white;
+    padding: 16px;
+    position: absolute;
+    top: ${props => props.top}px;
+    left: 16px;
+    z-index: 999;
+    transition: top 0.5s ease;
+`;
 
 
 class App extends React.Component {
@@ -16,7 +28,31 @@ class App extends React.Component {
         item: [{
             lastName: "Нет данных",
             firstName: "Нет данных"
-        }]
+        }],
+        message: "No message",
+        top: -100,
+        color: 'green'
+    }
+    ErrorNotification = () => {
+        this.setState({color: "red"});
+        this.setState({message: "Произошла ошибка. Пожалуйста повторите запрос позже"});
+        this.showNotification();
+    }
+    WarningNotification = () => {
+        this.setState({color: "DarkOrange"});
+        this.setState({message: "Введите имя и фамилию сотрудника"});
+        this.showNotification();
+    }
+    showNotification = () => {
+        this.setState({
+            top: 16,
+        }, () => {
+            this.timeout = setTimeout(() => {
+                this.setState({
+                    top: -100
+                });
+            }, 3000)
+        })
     }
     handleOpenModal = (item, code) => {
         debugger
@@ -38,49 +74,60 @@ class App extends React.Component {
         }
     }
     AddNewPerson = (LastName, FirstName) => {
-        if (LastName !== "" || FirstName !== "") {
+        if (LastName !== "" && FirstName !== "") {
             axios.post('http://localhost:3001/Person', {
                 'firstName': FirstName,
                 'lastName': LastName
-            }).then(res => {
-                console.log(res);
-                console.log(res.data);
-                alert("Прошло успешно")
-                const code = 3;
-                this.handleOpenModal(code);
+            }).then(response => {
+                this.setState({color: "green"})
+                this.setState({message: "Сотрудник успешно добавлен"})
+                this.showNotification();
+                const copied = [...this.state.data]
+                copied.push({
+                    firstName: FirstName,
+                    lastName: LastName
+                })
+                this.setState({data: copied})
+                this.handleOpenModal(null, 3);
+            }).catch(error => {
+                this.ErrorNotification();
+                this.handleOpenModal(null, 3);
             })
-        } else {
-            alert("Фамилия и имя не были введены. Введите имя или фамилию нового сотрудника")
+        } else if (LastName === "" || FirstName === "") {
+            this.WarningNotification();
         }
-        const copied = [...this.state.data]
-        copied.push({
-            firstName: FirstName,
-            lastName: LastName
-        })
-        this.setState({data: copied})
     }
     EditPerson = (LastName, FirstName, UserId) => {
-        axios.put(`http://localhost:3001/Person/${UserId}`, {
-            'firstName': FirstName,
-            'lastName': LastName
-        }).then(response => {
-            alert("Профиль успешно изменён")
-            console.log(response)
-            const copied = [...this.state.data]
-            copied[UserId] = {
-                ...this.state.data[UserId],
-                lastName: LastName,
-                firstName: FirstName
-            }
-            const code = 1;
-            this.handleOpenModal(null, code);
-            this.setState({data: copied})
-        })
+        if (LastName === "" || FirstName === "") {
+            this.WarningNotification();
+        } else {
+            axios.put(`http://localhost:3001/Person/${UserId}`, {
+                'firstName': FirstName,
+                'lastName': LastName
+            }).then(response => {
+                this.setState({color: "green"})
+                this.setState({message: "Сотрудник успешно обновлён"})
+                this.showNotification();
+                const copied = [...this.state.data]
+                copied[UserId] = {
+                    ...this.state.data[UserId],
+                    lastName: LastName,
+                    firstName: FirstName
+                }
+                this.handleOpenModal(null, 1);
+                this.setState({data: copied})
+            }).catch(error => {
+                this.ErrorNotification();
+                this.handleOpenModal(null, 1)
+            })
+        }
+
     }
     DeletePerson = () => {
         axios.delete(`http://localhost:3001/Person/${this.state.userId}`).then(response => {
-                alert("Удаление прошло успешно");
-                console.log(response)
+                this.setState({color: "green"})
+                this.setState({message: "Сотрудник успешно удалён"})
+                this.showNotification();
                 const copied = [...this.state.data]
                 copied[this.state.userId] = {
                     ...this.state.data[this.state.userId],
@@ -88,10 +135,12 @@ class App extends React.Component {
                     firstName: "Нет данных"
                 }
                 this.setState({data: copied})
-                const code = 2;
-                this.handleOpenModal(null, code);
+                this.handleOpenModal(null, 2);
             }
-        )
+        ).catch(error => {
+            this.ErrorNotification();
+            this.handleOpenModal(null, 2)
+        })
     }
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
@@ -114,6 +163,9 @@ class App extends React.Component {
     render() {
         return (
             <div className={styles.body}>
+                <Container top={this.state.top} color={this.state.color}>
+                    {this.state.message}
+                </Container>
                 <Table state={this.state} handleOpenModal={this.handleOpenModal}/>
                 <ModalWindow isOpen={this.state.isOpen}
                              handleOpenModal={this.handleOpenModal}
@@ -129,4 +181,5 @@ class App extends React.Component {
         )
     }
 }
+
 export default App;
