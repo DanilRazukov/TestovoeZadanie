@@ -3,18 +3,7 @@ import styles from './App.module.css';
 import Table from "./Table/Table";
 import axios from 'axios'
 import ModalWindow from "./ModalWindow/ModalWindow";
-import styled from "styled-components";
-
-const Container = styled.div`
-    background-color: ${props => props.color};
-    color: white;
-    padding: 16px;
-    position: absolute;
-    top: ${props => props.top}px;
-    left: 16px;
-    z-index: 999;
-    transition: top 0.5s ease;
-`;
+import Notification from "./Notification/Notification";
 
 
 class App extends React.Component {
@@ -25,52 +14,30 @@ class App extends React.Component {
         isModalDeleteOpen: false,
         isModalAddOpen: false,
         userId: null,
-        userPosition:null,
+        userPosition: null,
         item: [{
             lastName: "Нет данных",
             firstName: "Нет данных"
         }],
-        message: "No message",
-        top: -100,
-        color: 'green'
+        windowNotification: "Success"
     }
-    ErrorNotification = () => {
-        this.setState({color: "red"});
-        this.setState({message: "Произошла ошибка. Пожалуйста повторите запрос позже"});
-        this.showNotification();
-    }
-    WarningNotification = () => {
-        this.setState({color: "DarkOrange"});
-        this.setState({message: "Введите имя и фамилию сотрудника"});
-        this.showNotification();
-    }
-    showNotification = () => {
-        this.setState({
-            top: 16,
-        }, () => {
-            this.timeout = setTimeout(() => {
-                this.setState({
-                    top: -100
-                });
-            }, 3000)
-        })
-    }
+
     handleOpenModal = (item, code) => {
         this.setState({isOpen: !this.state.isOpen});
         if (code === 1) {
             this.setState({isModalEditOpen: !this.state.isModalEditOpen});
         } else {
             if (code === 2) {
-                this.setState({isModalDeleteOpen: !this.state.isModalDeleteOpen})
+                this.setState({isModalDeleteOpen: !this.state.isModalDeleteOpen});
             } else {
                 if (code === 3) {
-                    this.setState({isModalAddOpen: !this.state.isModalAddOpen})
+                    this.setState({isModalAddOpen: !this.state.isModalAddOpen});
                 }
             }
         }
         if (item !== this.state.userId) {
             this.setState({userId: item});
-            this.setState({item: this.state.data.filter(items => items.id === this.state.userId)})
+            this.setState({item: this.state.data.filter(items => items.id === this.state.userId)});
         }
     }
     AddNewPerson = (LastName, FirstName) => {
@@ -79,68 +46,61 @@ class App extends React.Component {
                 'firstName': FirstName,
                 'lastName': LastName
             }).then(response => {
-                this.setState({color: "green"})
-                this.setState({message: "Сотрудник успешно добавлен"})
-                this.showNotification();
-                const copied = [...this.state.data]
+                this.setState({windowNotification: "Success"})
+                const copied = [...this.state.data];
                 copied.push({
                     firstName: FirstName,
                     lastName: LastName
-                })
+                });
                 this.setState({data: copied})
                 this.handleOpenModal(null, 3);
             }).catch(error => {
-                this.ErrorNotification();
-                this.handleOpenModal(null, 3);
+                this.setState({windowNotification: "Error"})
             })
         } else if (LastName === "" || FirstName === "") {
-            this.WarningNotification();
+            this.setState({windowNotification: "Warning"})
         }
     }
     EditPerson = (LastName, FirstName, UserId) => {
         if (LastName === "" || FirstName === "") {
-            this.WarningNotification();
+            this.setState({windowNotification: "Warning"})
         } else {
             axios.put(`http://localhost:3001/Person/${UserId}`, {
                 'firstName': FirstName,
                 'lastName': LastName
             }).then(response => {
-                this.setState({color: "green"})
-                this.setState({message: "Сотрудник успешно обновлён"})
-                this.showNotification();
-                const copied = [...this.state.data]
+                this.setState({windowNotification: "Success"})
+                const copied = [...this.state.data];
                 copied[UserId] = {
                     ...this.state.data[UserId],
                     lastName: LastName,
                     firstName: FirstName
-                }
+                };
                 this.handleOpenModal(null, 1);
-                this.setState({data: copied})
+                this.setState({data: copied});
             }).catch(error => {
-                this.ErrorNotification();
-                this.handleOpenModal(null, 1)
+                this.setState({windowNotification: "Error"})
+                this.handleOpenModal(null, 1);
             })
         }
 
     }
     DeletePerson = () => {
         axios.delete(`http://localhost:3001/Person/${this.state.userId}`).then(response => {
-                this.setState({color: "green"})
-                this.setState({message: "Сотрудник успешно удалён"})
-                this.showNotification();
+                this.setState({windowNotification: "Success"})
                 const index = this.state.data.findIndex(el => el.id === this.state.userId);
-                const copied = [...this.state.data]
+                const copied = [...this.state.data];
                 copied[index] = {
                     ...this.state.data[index],
                     lastName: "Нет данных",
                     firstName: "Нет данных"
                 }
-                this.setState({data: copied})
+                this.setState({data: copied});
                 this.handleOpenModal(null, 2);
             }
         ).catch(error => {
-            this.ErrorNotification();
-            this.handleOpenModal(null, 2)
+            this.setState({windowNotification:"Error"})
+            this.handleOpenModal(null, 2);
         })
     }
 
@@ -151,22 +111,20 @@ class App extends React.Component {
             })
         }
         if (prevState.data !== this.state.data) {
-            const data = await axios.get('http://localhost:3001/Person')
-            await this.setState(this.state.data = data.data)
+            const data = await axios.get('http://localhost:3001/Person');
+            await this.setState(this.state.data = data.data);
         }
     }
 
     async componentDidMount() {
-        const data = await axios.get('http://localhost:3001/Person')
-        await this.setState(this.state.data = data.data)
+        const data = await axios.get('http://localhost:3001/Person');
+        await this.setState(this.state.data = data.data);
     }
 
     render() {
         return (
             <div className={styles.body}>
-                <Container top={this.state.top} color={this.state.color}>
-                    {this.state.message}
-                </Container>
+                <Notification window={this.state.windowNotification}/>
                 <Table state={this.state} handleOpenModal={this.handleOpenModal}/>
                 <ModalWindow isOpen={this.state.isOpen}
                              handleOpenModal={this.handleOpenModal}

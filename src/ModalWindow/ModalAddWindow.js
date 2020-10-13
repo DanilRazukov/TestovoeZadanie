@@ -15,7 +15,7 @@ const ModalAddWindow = (props) => {
     }
     const CloseAddWindow = () => {
         const dataFromChild = 3;
-        props.CloseWindow (dataFromChild)
+        props.CloseWindow (dataFromChild);
     }
     return (
         <div>

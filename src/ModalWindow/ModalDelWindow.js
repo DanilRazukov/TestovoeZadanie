@@ -6,11 +6,11 @@ Modal.setAppElement ('#root');
 const ModalDelWindows = (props) => {
     let FullName = "Данных нет";
     if (props.item.length !== 0) {
-        FullName = props.item[0].lastName + " " + props.item[0].firstName
+        FullName = props.item[0].lastName + " " + props.item[0].firstName;
     }
     const CloseDeleteWindow = () => {
         const dataFromChild = 2;
-        props.CloseWindow (dataFromChild)
+        props.CloseWindow (dataFromChild);
     }
     return (
         <div>

@@ -13,14 +13,14 @@ const ModalEditWindow = (props) => {
     let AddEditPerson = () => {
         let LastName = newLastName.current.value;
         let FirstName = newFirstName.current.value;
-        let UserId = props.userId
+        let UserId = props.userId;
         props.editPerson(LastName, FirstName,UserId);
         newLastName.current.value = "";
         newFirstName.current.value = "";
     }
     const CloseEditWindow = () => {
         const dataFromChild = 1;
-        props.CloseWindow (dataFromChild)
+        props.CloseWindow (dataFromChild);
     }
     return (
         <div>

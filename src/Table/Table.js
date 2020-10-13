@@ -10,11 +10,11 @@ class Table extends React.Component {
     }
     onPressDelete = (item) => {
         const code = 2;
-        this.props.handleOpenModal(item, code)
+        this.props.handleOpenModal(item, code);
     }
     onPressAdd = () => {
         const code = 3;
-        this.props.handleOpenModal(null, code)
+        this.props.handleOpenModal(null, code);
     }
     render() {
         return (
