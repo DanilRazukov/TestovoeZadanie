@@ -20,8 +20,6 @@ A
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a
 N
 src/ModalWindow/ModalWindow.js,7\a\7af03a01ba3bdb34b77251f986d26b364e186739
-7
-db.json,8\8\882a43610b9835dd51ca4ad37a0967fa0205e328
 D
 src/serviceWorker.js,9\2\920ab6ab4a57ee20a36df4e3e2e73b70f9969d14
 Q
@@ -32,3 +30,7 @@ A
 src/index.css,c\5\c5d38a62d1faae90a2acaa34b79a7ef365c917e4
 Q
 !src/ModalWindow/Button.module.css,5\a\5af4b59f203f91c3ced79826472570f18441a75c
+7
+db.json,8\8\882a43610b9835dd51ca4ad37a0967fa0205e328
+@
+json-server.json,9\a\9a3bea92191ed32aab9874ff19ad14612445fc95
