@@ -25,6 +25,7 @@ class App extends React.Component {
         isModalDeleteOpen: false,
         isModalAddOpen: false,
         userId: null,
+        userPosition:null,
         item: [{
             lastName: "Нет данных",
             firstName: "Нет данных"
@@ -55,7 +56,7 @@ class App extends React.Component {
         })
     }
     handleOpenModal = (item, code) => {
-        this.setState({isOpen: !this.state.isOpen})
+        this.setState({isOpen: !this.state.isOpen});
         if (code === 1) {
             this.setState({isModalEditOpen: !this.state.isModalEditOpen});
         } else {
@@ -127,9 +128,10 @@ class App extends React.Component {
                 this.setState({color: "green"})
                 this.setState({message: "Сотрудник успешно удалён"})
                 this.showNotification();
+                const index = this.state.data.findIndex(el => el.id === this.state.userId);
                 const copied = [...this.state.data]
-                copied[this.state.userId] = {
-                    ...this.state.data[this.state.userId],
+                copied[index] = {
+                    ...this.state.data[index],
                     lastName: "Нет данных",
                     firstName: "Нет данных"
                 }
